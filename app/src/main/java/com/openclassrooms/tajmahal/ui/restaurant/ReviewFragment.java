@@ -29,7 +29,7 @@ import com.openclassrooms.tajmahal.ui.adapter.ReviewAdapter;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements ReviewAdapter.OnReviewDeleteListener {
 
     private ReviewAdapter reviewAdapter;
     private RecyclerView reviewsRecyclerView;
@@ -38,8 +38,6 @@ public class ReviewFragment extends Fragment {
     private EditText editTextComment;
     private Button submitButton;
 
-    public ReviewFragment() {
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,6 +109,7 @@ public class ReviewFragment extends Fragment {
         });
     }
 
+
     private void hideKeyboard(View view){
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null && getActivity().getCurrentFocus() != null) {
@@ -138,6 +137,9 @@ public class ReviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Initialisation du ViewModel
         detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
+        reviewAdapter.setOnReviewDeleteListener(review -> {
+            detailsViewModel.delReview(review);
+        });
         observeReviews();
     }
 
@@ -159,5 +161,10 @@ public class ReviewFragment extends Fragment {
             reviewAdapter.setReviews(reviews);
         });
 
+    }
+
+    @Override
+    public void onReviewDelete(Review review) {
+        detailsViewModel.delReview(review);
     }
 }

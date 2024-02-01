@@ -42,6 +42,7 @@ public class DetailsFragment extends Fragment {
 
     private DetailsViewModel detailsViewModel;
 
+
     /**
      * Cette méthode est appelée lorsque le fragment est créé pour la première fois.
      * Elle est utilisée pour effectuer une initialisation unique.

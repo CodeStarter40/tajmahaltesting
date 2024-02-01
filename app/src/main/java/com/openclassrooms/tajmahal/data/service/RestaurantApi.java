@@ -54,4 +54,6 @@ public interface RestaurantApi {
     List<Review> getReviews();
 
     void addReview(Review review);
+
+    void delReview(Review review);
 }

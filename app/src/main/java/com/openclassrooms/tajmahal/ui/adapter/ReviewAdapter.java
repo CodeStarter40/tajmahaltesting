@@ -3,6 +3,7 @@ package com.openclassrooms.tajmahal.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     private List<Review> reviewList;
+    private OnReviewDeleteListener deleteListener;
+
+    public void setOnReviewDeleteListener(OnReviewDeleteListener listener) {
+        this.deleteListener = listener;
+    }
 
     public ReviewAdapter() {
         this.reviewList = new ArrayList<>(); //Initialisez avec une liste vide pour éviter les NullPointerException
@@ -53,6 +59,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Gérer le cas où l'image est nulle ou vide,en affichant exemple une image par défaut
             holder.picture.setImageResource(R.drawable.defaut_ui_image);
         }
+        holder.deleteButton.setOnClickListener(v -> {
+            if (deleteListener != null) {
+                deleteListener.onReviewDelete(reviewList.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
@@ -66,6 +77,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         TextView commentTextView;
         RatingBar ratingBar;
         ImageView picture;
+        Button deleteButton;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +85,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             commentTextView = itemView.findViewById(R.id.commentTextView);
             ratingBar = itemView.findViewById(R.id.reviewRatingBar);
             picture = itemView.findViewById(R.id.picture);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
+    public interface OnReviewDeleteListener {
+        void onReviewDelete(Review review);
+    }
+
 }

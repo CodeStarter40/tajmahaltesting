@@ -35,6 +35,9 @@ public class DetailsViewModel extends ViewModel {
 
         restaurantRepository.addReview(review);
     }
+    public void delReview(Review review) {
+        restaurantRepository.delReview(review);
+    }
 
     /**
      * Constructeur que Hilt utilisera pour créer une instance de MainViewModel.

@@ -68,4 +68,9 @@ public class RestaurantRepository {
         restaurantApi.addReview(review);
         liveDataReviews.setValue(restaurantApi.getReviews());
     }
+
+    public void delReview(Review review) {
+        restaurantApi.delReview(review);
+        liveDataReviews.setValue(restaurantApi.getReviews());
+    }
 }

@@ -80,4 +80,10 @@ public class RestaurantFakeApi implements RestaurantApi {
         reviews.add(review);
     }
 
+    @Override
+    public void delReview(Review review) {
+        reviews.remove(review);
+
+    }
+
 }
