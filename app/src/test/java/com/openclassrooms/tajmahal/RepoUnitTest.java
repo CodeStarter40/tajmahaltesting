@@ -55,4 +55,37 @@ public class RepoUnitTest {
         assertEquals(newReview.getComment(), addedReview.getComment());
         assertEquals(newReview.getRate(), addedReview.getRate());
     }
+
+    @Test
+    public void testSupprReview() throws InterruptedException {
+        //création nouvel avis
+        Review newReview = new Review("Marjorie", "https://xsgames.co/randomusers/assets/avatars/female/9.jpg", "pas terrible, viande pas assez cuite !", 2);
+        LiveData<List<Review>> review = restaurantRepository.getReviews();
+        //ajout via méthode addreview
+        restaurantRepository.addReview(newReview);
+        //recuperation liste avis
+        List<Review> reviews = LiveDataTestUtil.getOrAwaitValue(review);
+        assertNotNull(reviews);
+        assertFalse(reviews.isEmpty());
+        Review addedReview = reviews.get(5);
+        //comparaison des resultats
+        assertEquals(newReview.getUsername(), addedReview.getUsername());
+        assertEquals(newReview.getPicture(), addedReview.getPicture());
+        assertEquals(newReview.getRate(), addedReview.getRate());
+        assertEquals(newReview.getComment(), addedReview.getComment());
+        //suppression de la review
+        restaurantRepository.delReview(addedReview);
+        List<Review> updatedReviews = LiveDataTestUtil.getOrAwaitValue(review);
+        //verification de la suppression de la review
+        assertNotNull(updatedReviews);
+        boolean marjorieReviewExists = false; //var booleene
+        //for pour parcourir la liste des avis
+        for (Review updatedReview : updatedReviews) {
+            if ("Marjorie".equals(updatedReview.getUsername())) {
+                marjorieReviewExists = true;
+                break;
+            }
+        }
+        assertFalse(marjorieReviewExists);
+    }
 }
