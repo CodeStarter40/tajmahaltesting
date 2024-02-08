@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 import androidx.lifecycle.LiveData;
 
+import java.sql.ClientInfoStatus;
 import java.util.List;
 
 /**
@@ -87,5 +88,22 @@ public class RepoUnitTest {
             }
         }
         assertFalse(marjorieReviewExists);
+    }
+    @Test
+    public void testSupprReviewBdd() throws InterruptedException {   //Given-when-then
+        //mise en place de la préparation
+        LiveData<List<Review>> review = restaurantRepository.getReviews();
+        List<Review> reviews = LiveDataTestUtil.getOrAwaitValue(review);
+        assertNotNull(reviews);//verif liste recupérée notnull
+        assertEquals(5,reviews.size());//verif 5 avis
+
+        //action du test
+        Review reviewToDelete = reviews.get(2); //affectation de l'element 2 de la list à la variable reviewTodelete
+        restaurantRepository.delReview(reviewToDelete); //suppresion de la review 2
+
+        //verif
+        List<Review> updatedReviews = LiveDataTestUtil.getOrAwaitValue(review);
+        assertNotNull(updatedReviews);
+        assertFalse(updatedReviews.contains(reviewToDelete)); //verif que la review dans la variable à bien été délete.
     }
 }
